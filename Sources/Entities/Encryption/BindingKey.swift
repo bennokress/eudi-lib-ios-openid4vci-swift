@@ -184,7 +184,7 @@ public extension BindingKey {
       let attestedPublicKey = keyAttestationJwt.attestedKeys[Int(keyIndex)]
       let header: JWSHeader = try .init(
         parameters: [
-          JWTClaimNames.kid: "0",
+          JWTClaimNames.JWK: try attestedPublicKey.toDictionary(),
           JWTClaimNames.algorithm: algorithm.name,
           JWTClaimNames.type: Self.OpenID4VCIProofJWT,
           JWTClaimNames.keyAttestation: keyAttestationJwt.jws.compactSerializedString

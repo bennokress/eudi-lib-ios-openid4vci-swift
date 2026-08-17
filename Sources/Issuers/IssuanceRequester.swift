@@ -602,6 +602,9 @@ private extension IssuanceRequester {
   ///   - proofLabel: Label for error messages
   ///   - index: Index for error messages
   private func validateKidIsZero(_ header: JWSHeader, proofLabel: String, index: Int) throws {
+    // A header that names its key inline needs no kid, and per OID4VCI Appendix F may not
+    // carry one: exactly one of jwk / kid / x5c identifies the signing key.
+    if header.jwkTyped != nil { return }
     guard let kid = header.kid else {
       throw CredentialIssuanceError.missingKid
     }
